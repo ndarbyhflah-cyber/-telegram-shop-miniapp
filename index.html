@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#100c24">
+  <title>NOVA STORE | فروشگاه تلگرامی</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #0d0b19;
+      --card: #19152b;
+      --purple: #9b5cff;
+      --blue: #38bdf8;
+      --text: #f7f4ff;
+      --muted: #aaa4c4;
+    }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 90% 0%, #392064 0, transparent 38%),
+        var(--bg);
+      color: var(--text);
+      font-family: Tahoma, Arial, sans-serif;
+      min-height: 100vh;
+    }
+    button { font: inherit; cursor: pointer; }
+    .app { max-width: 520px; margin: auto; padding: 20px 16px 100px; }
+    .top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 25px;
+    }
+    .brand { display: flex; gap: 11px; align-items: center; }
+    .logo {
+      width: 48px; height: 48px; border-radius: 16px;
+      display: grid; place-items: center; font-size: 25px;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      box-shadow: 0 0 25px #8c4fff44;
+    }
+    .brand h1 { font-size: 18px; margin: 0 0 5px; }
+    .brand small, .muted { color: var(--muted); font-size: 12px; }
+    .online {
+      color: #70f0b1; font-size: 11px;
+      border: 1px solid #70f0b144; padding: 7px 9px;
+      border-radius: 20px;
+    }
+    .hero {
+      position: relative; overflow: hidden; border-radius: 24px;
+      padding: 25px 20px; margin-bottom: 22px;
+      background: linear-gradient(125deg, #6334b8, #25245d 65%, #126184);
+      border: 1px solid #ffffff19;
+    }
+    .hero:after {
+      content: "✦"; position: absolute; left: 18px; top: 12px;
+      font-size: 68px; color: #ffffff30;
+    }
+    .hero .tag {
+      font-size: 11px; background: #ffffff20;
+      border-radius: 20px; padding: 7px 10px;
+      display: inline-block;
+    }
+    .hero h2 { font-size: 24px; line-height: 1.7; margin: 13px 0 7px; }
+    .hero p { font-size: 12px; color: #e0dcff; line-height: 2; }
+    .section-head {
+      display: flex; justify-content: space-between;
+      align-items: center; margin: 25px 2px 13px;
+    }
+    .section-head h3 { font-size: 16px; margin: 0; }
+    .section-head span { color: var(--blue); font-size: 11px; }
+    .wallet {
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(120deg, #201638, #151c35);
+      border: 1px solid #8c62ff45; border-radius: 19px;
+      padding: 18px; margin-bottom: 25px;
+    }
+    .wallet-label { font-size: 12px; color: var(--muted); }
+    .balance { font-size: 21px; font-weight: bold; margin-top: 10px; }
+    .balance small { font-size: 11px; color: var(--muted); }
+    .wallet-icon { font-size: 32px; }
+    .products { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .product {
+      background: linear-gradient(145deg, #201a36, #151323);
+      border: 1px solid #ffffff12; border-radius: 20px;
+      padding: 16px 13px; min-width: 0;
+    }
+    .product-icon {
+      height: 78px; display: grid; place-items: center;
+      font-size: 40px; border-radius: 15px; margin-bottom: 13px;
+      background: linear-gradient(135deg, #8e51ff25, #38bdf820);
+    }
+    .product h4 { font-size: 14px; margin: 0 0 8px; }
+    .product p {
+      color: var(--muted); font-size: 11px;
+      line-height: 1.9; min-height: 40px; margin: 0 0 12px;
+    }
+    .price { color: #d5c3ff; font-size: 12px; margin-bottom: 12px; }
+    .buy {
+      border: 0; width: 100%; padding: 11px 5px; border-radius: 12px;
+      color: white; font-size: 12px; font-weight: bold;
+      background: linear-gradient(100deg, #8648ed, #4568ee);
+    }
+    .buy:active, .primary:active { opacity: .75; }
+    .features { display: grid; gap: 10px; }
+    .feature {
+      background: var(--card); border: 1px solid #ffffff0d;
+      border-radius: 14px; padding: 14px;
+      display: flex; align-items: center; gap: 12px; font-size: 12px;
+    }
+    .feature-icon { font-size: 23px; }
+    .feature small { display: block; color: var(--muted); margin-top: 5px; }
+    .notice {
+      font-size: 11px; line-height: 2;
+      color: var(--muted); text-align: center; margin-top: 25px;
+    }
+    .nav {
+      position: fixed; z-index: 5; bottom: 0; left: 0; right: 0;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: #100d1df2; backdrop-filter: blur(16px);
+      border-top: 1px solid #ffffff13;
+      display: flex; justify-content: center;
+    }
+    .nav-inner { width: 100%; max-width: 480px; display: flex; gap: 8px; }
+    .nav button {
+      flex: 1; border: 0; border-radius: 13px; padding: 12px 5px;
+      color: var(--muted); background: transparent; font-size: 11px;
+    }
+    .nav button.active { color: white; background: #8050df35; }
+    .primary {
+      background: linear-gradient(100deg, #8648ed, #4568ee);
+      border: 0; color: white; padding: 12px 18px;
+      border-radius: 12px;
+    }
+    .modal-bg {
+      display: none; position: fixed; inset: 0; z-index: 10;
+      background: #05030bd9; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal {
+      width: 100%; max-width: 400px; background: #19152b;
+      border: 1px solid #a477ff55; border-radius: 22px; padding: 22px;
+    }
+    .modal h3 { margin-top: 0; }
+    .modal p { color: var(--muted); font-size: 13px; line-height: 2; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+    .secondary {
+      flex: 1; border: 1px solid #ffffff25; background: transparent;
+      color: white; border-radius: 12px; padding: 12px;
+    }
+    @media (max-width: 350px) {
+      .products { grid-template-columns: 1fr; }
+      .hero h2 { font-size: 21px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <header class="top">
+      <div class="brand">
+        <div class="logo">✦</div>
+        <div>
+          <h1>NOVA STORE</h1>
+          <small>فروشگاه خدمات تلگرام</small>
+        </div>
+      </div>
+      <span class="online">● آنلاین</span>
+    </header>
+
+    <section class="hero">
+      <span class="tag">✦ تجربه خرید متفاوت</span>
+      <h2>به دنیای نوا<br>خوش اومدی!</h2>
+      <p>محصولات موردعلاقه‌ات رو پیدا کن و سفارشت رو ثبت کن.</p>
+    </section>
+
+    <div class="section-head">
+      <h3>💳 کیف پول من</h3>
+      <span>حساب کاربری</span>
+    </div>
+
+    <section class="wallet">
+      <div>
+        <div class="wallet-label">موجودی حساب</div>
+        <div class="balance">— <small>تومان</small></div>
+        <div class="muted" style="margin-top:9px">
+          پس از اتصال امن، موجودی واقعی نمایش داده می‌شود.
+        </div>
+      </div>
+      <div class="wallet-icon">👛</div>
+    </section>
+
+    <div class="section-head">
+      <h3>🛍 محصولات فروشگاه</h3>
+      <span>انتخاب محصول</span>
+    </div>
+
+    <section class="products">
+      <article class="product">
+        <div class="product-icon">⭐</div>
+        <h4>تلگرام استارز</h4>
+        <p>خرید استارز برای حساب تلگرام</p>
+        <div class="price">قیمت: به‌زودی</div>
+        <button class="buy" data-product="تلگرام استارز">مشاهده محصول</button>
+      </article>
+
+      <article class="product">
+        <div class="product-icon">💎</div>
+        <h4>تلگرام پریمیوم</h4>
+        <p>اشتراک پریمیوم تلگرام</p>
+        <div class="price">قیمت: به‌زودی</div>
+        <button class="buy" data-product="تلگرام پریمیوم">مشاهده محصول</button>
+      </article>
+
+      <article class="product">
+        <div class="product-icon">🎁</div>
+        <h4>هدیه تلگرامی</h4>
+        <p>خدمات و هدیه‌های تلگرامی</p>
+        <div class="price">قیمت: به‌زودی</div>
+        <button class="buy" data-product="هدیه تلگرامی">مشاهده محصول</button>
+      </article>
+
+      <article class="product">
+        <div class="product-icon">🚀</div>
+        <h4>سایر خدمات</h4>
+        <p>خدمات متنوع حساب تلگرام</p>
+        <div class="price">قیمت: به‌زودی</div>
+        <button class="buy" data-product="سایر خدمات">مشاهده محصول</button>
+      </article>
+    </section>
+
+    <div class="section-head">
+      <h3>✨ خدمات فروشگاه</h3>
+    </div>
+    <section class="features">
+      <div class="feature">
+        <span class="feature-icon">🔒</span>
+        <div>خرید امن<small>اتصال به پرداخت پس از راه‌اندازی backend</small></div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">📦</span>
+        <div>پیگیری سفارش<small>وضعیت سفارش‌ها پس از اتصال به ربات</small></div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">🎧</span>
+        <div>پشتیبانی<small>پیگیری و پاسخ‌گویی به کاربران</small></div>
+      </div>
+    </section>
+
+    <p class="notice">
+      نسخه اولیه رابط کاربری NOVA STORE<br>
+      موجودی، قیمت و سفارش واقعی هنوز به سرور متصل نشده‌اند.
+    </p>
+  </main>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <button class="active" data-tab="home">🏠 خانه</button>
+      <button data-tab="products">🛍 محصولات</button>
+      <button data-tab="wallet">👛 کیف پول</button>
+      <button data-tab="orders">📦 سفارش‌ها</button>
+    </div>
+  </nav>
+
+  <div class="modal-bg" id="modal-bg">
+    <section class="modal">
+      <h3 id="modal-title">محصول</h3>
+      <p id="modal-text"></p>
+      <div class="modal-actions">
+        <button class="secondary" id="close-modal">بستن</button>
+        <button class="primary" id="open-bot">رفتن به ربات</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    const modal = document.getElementById("modal-bg");
+    let selectedProduct = "";
+
+    document.querySelectorAll("[data-product]").forEach(button => {
+      button.addEventListener("click", () => {
+        selectedProduct = button.dataset.product;
+        document.getElementById("modal-title").textContent = selectedProduct;
+        document.getElementById("modal-text").textContent =
+          "برای ثبت سفارش واقعی، ابتدا باید این صفحه به ربات فروشگاه و دیتابیس آن متصل شود. فعلاً سفارش یا پرداختی ثبت نمی‌شود.";
+        modal.style.display = "flex";
+      });
+    });
+
+    document.getElementById("close-modal").onclick = () => {
+      modal.style.display = "none";
+    };
+
+    modal.addEventListener("click", event => {
+      if (event.target === modal) modal.style.display = "none";
+    });
+
+    document.getElementById("open-bot").onclick = () => {
+      if (tg) {
+        tg.openTelegramLink("https://t.me/Pa_trick_shop_bot");
+      } else {
+        window.open("https://t.me/Pa_trick_shop_bot", "_blank");
+      }
+    };
+
+    document.querySelectorAll("[data-tab]").forEach(button => {
+      button.addEventListener("click", () => {
+        const tab = button.dataset.tab;
+        document.querySelectorAll("[data-tab]").forEach(item =>
+          item.classList.toggle("active", item === button)
+        );
+
+        if (tab === "home") window.scrollTo({top: 0, behavior: "smooth"});
+        if (tab === "products")
+          document.querySelector(".products").scrollIntoView({behavior: "smooth"});
+        if (tab === "wallet")
+          document.querySelector(".wallet").scrollIntoView({behavior: "smooth"});
+        if (tab === "orders") {
+          document.getElementById("modal-title").textContent = "سفارش‌های من";
+          document.getElementById("modal-text").textContent =
+            "برای نمایش سفارش‌های واقعی باید ارتباط امن با ربات راه‌اندازی شود.";
+          modal.style.display = "flex";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
